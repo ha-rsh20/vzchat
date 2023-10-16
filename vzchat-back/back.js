@@ -5,7 +5,7 @@ const user = require("./schemas/user-Schema");
 const history = require("./schemas/history-Schema");
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/vchat")
+  .connect("mongodb+srv://root:root@cluster0.utwhjq0.mongodb.net/")
   .then(() => console.log("Connection Established!"))
   .catch((err) => console.log(err));
 
