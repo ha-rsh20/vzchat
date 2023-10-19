@@ -18,7 +18,7 @@ const historySchema = mongoose.Schema({
     required: true,
   },
   meettime: {
-    type: Date,
+    type: String,
     required: true,
   },
 });

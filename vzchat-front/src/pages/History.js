@@ -8,16 +8,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { theme } from "../mui_style";
 import Pagination from "./Pagination";
 import MenuItem from "@mui/material/MenuItem";
+import "../App.css";
 
 function History() {
   let [hst, setHst] = useState([]);
   let [hstids, setHstIds] = useState([]);
   let [ids, setIds] = useState([]);
+  const [meetBy, setMeetBy] = useState([]);
   const [history, setHistory] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  let [count, setCount] = useState(0);
   let userSId = useSelector((state) => state.users.id);
   const dispatch = useDispatch();
+  let time = new Date();
 
   const [postPerPage, setPostPerPage] = useState("5");
   const indexOfLastPost = page * postPerPage;
@@ -33,6 +37,9 @@ function History() {
       let len = ids[i].length;
       for (let j = 0; j < len; j++) {
         if (ids[i][j] === userSId) {
+          if (j === 0) {
+            meetBy.push(1);
+          }
           history.push(hst[i]);
         }
       }
@@ -65,6 +72,10 @@ function History() {
     setPage(pageNumber);
   };
 
+  const handleCount = () => {
+    count = count + 1;
+  };
+
   useEffect(() => {
     if (localStorage.getItem("id")) {
       userSId = localStorage.getItem("id");
@@ -77,6 +88,16 @@ function History() {
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Failed to load history data!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       });
   }, []);
 
@@ -97,59 +118,73 @@ function History() {
           <div className="container" style={{ marginBottom: 20 }}>
             <div className="row">
               <div className="col-3">Meeting Name</div>
+              <div className="col-2"></div>
               <div className="col-3">Meeting Time</div>
             </div>
           </div>
-          {currentPosts.map((item) => (
-            <div key={item.id} className="container">
+          {history.length !== 0 ? (
+            <div>
+              {currentPosts.map((item) => (
+                <div key={item.id} className="container">
+                  <div className="row history">
+                    <span style={{ marginTop: -17 }}>
+                      <hr />
+                    </span>
+                    <span className="col-3" style={{ paddingTop: 15 }}>
+                      {item.meetname}
+                    </span>
+                    <span className="col-2" style={{ paddingTop: 15 }}>
+                      {meetBy[count] === 1
+                        ? "This meeting was created by You"
+                        : "Someone created this meeting"}
+                      {handleCount()}
+                    </span>
+                    <span className="col-3" style={{ paddingTop: 15 }}>
+                      {item.meettime}
+                    </span>
+                  </div>
+                </div>
+              ))}
               <div
-                className="row"
                 style={{
-                  padding: "5px",
-                  borderRadius: "10px",
-                  boxShadow: "5px 5px 15px -5px #000",
+                  margin: 10,
+                  marginBottom: 70,
+                  display: "flex",
+                  justifyContent: "center",
                 }}
               >
-                <span className="col-3" style={{ paddingTop: 15 }}>
-                  {item.meetname}
-                </span>
-                <span className="col-3" style={{ paddingTop: 15 }}>
-                  {item.meettime}
-                </span>
+                <TextField
+                  id="filled-select-currency"
+                  select
+                  label="Select"
+                  defaultValue={postPerPage}
+                  variant="filled"
+                  onChange={handlePostPerPage}
+                >
+                  {postPerPageA.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <Pagination
+                  postPerPage={postPerPage}
+                  totalPosts={history.length}
+                  paginate={paginate}
+                  currentPage={page}
+                />
               </div>
             </div>
-          ))}
+          ) : (
+            <div className="history">
+              <span style={{ marginTop: -17 }}>
+                <hr />
+              </span>
+              <span>You have not involved in any meeting till now!</span>
+            </div>
+          )}
         </div>
 
-        <div
-          style={{
-            margin: 10,
-            marginBottom: 70,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <TextField
-            id="filled-select-currency"
-            select
-            label="Select"
-            defaultValue={postPerPage}
-            variant="filled"
-            onChange={handlePostPerPage}
-          >
-            {postPerPageA.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          <Pagination
-            postPerPage={postPerPage}
-            totalPosts={history.length}
-            paginate={paginate}
-            currentPage={page}
-          />
-        </div>
         <ToastContainer />
       </ThemeProvider>
     </div>

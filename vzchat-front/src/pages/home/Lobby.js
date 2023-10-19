@@ -20,6 +20,7 @@ function Lobby() {
   const [meetname, setMeetName] = useState("");
   const [roomid, setRoomId] = useState("");
   const [value, setValue] = useState("one");
+  const [error, setError] = useState(false);
   let userSId = useSelector((state) => state.users.id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ function Lobby() {
     e.preventDefault();
     if (value === "two") {
       let currentTime = new Date();
-      addMeetingData(currentTime);
+      let time = currentTime.toLocaleString();
+      addMeetingData(time);
     } else {
       handleMeetData(userSId);
     }
@@ -42,6 +44,7 @@ function Lobby() {
   const addMeetingData = (currentTime) => {
     let id = meets[meets.length - 1].id + 1;
     let roomid = uuidV4();
+    console.log(currentTime);
     axios
       .post("http://localhost:4000/app/addMeetData", {
         id,
@@ -142,6 +145,17 @@ function Lobby() {
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Network Error!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setError(true);
       });
   });
 
@@ -205,9 +219,15 @@ function Lobby() {
                     <br />
                   </>
                 )}
-                <Button variant="contained" type="submit">
-                  {value === "one" ? <>join</> : <>create</>}
-                </Button>
+                {error ? (
+                  <Button variant="contained" type="submit" disabled>
+                    {value === "one" ? <>join</> : <>create</>}
+                  </Button>
+                ) : (
+                  <Button variant="contained" type="submit">
+                    {value === "one" ? <>join</> : <>create</>}
+                  </Button>
+                )}
               </div>
             </div>
           </div>

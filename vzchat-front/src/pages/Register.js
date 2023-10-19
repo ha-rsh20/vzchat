@@ -22,6 +22,7 @@ import { updateUserId } from "../state/slice/userSlice.js";
 import { updateUserLoggedIn } from "../state/slice/userSlice.js";
 
 function Register(props) {
+  const [error, setError] = useState(false);
   const [users, setUsers] = useState([]);
   let [user, setUser] = useState();
   const [value, setValue] = useState(
@@ -91,8 +92,9 @@ function Register(props) {
           progress: undefined,
           theme: "dark",
         });
+        setError(true);
       });
-  }, []);
+  }, [value]);
 
   const setUp = (fname, lname, id, email) => {
     dispatch(updateUserEmail(email));
@@ -393,13 +395,24 @@ function Register(props) {
                       )}
                     </div>
                   )}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{ margin: 10 }}
-                  >
-                    {value === "register" ? "register" : "login"}
-                  </Button>
+                  {error ? (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      style={{ margin: 10 }}
+                      disabled
+                    >
+                      {value === "register" ? "register" : "login"}
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      style={{ margin: 10 }}
+                    >
+                      {value === "register" ? "register" : "login"}
+                    </Button>
+                  )}
                 </>
               </ThemeProvider>
             </form>
