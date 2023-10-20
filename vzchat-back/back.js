@@ -172,7 +172,7 @@ app.put("/app/addMeetData/:meetname/:meetid", async (req, res) => {
 
     history
       .updateOne(
-        { meetid: req.params.meetid, meetname: req.params.meetname },
+        { meetid: req.params.meetid } && { meetname: req.params.meetname },
         { $set: updateMeet }
       )
       .then((updatedMeet) => {
