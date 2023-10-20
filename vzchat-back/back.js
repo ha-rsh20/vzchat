@@ -5,7 +5,7 @@ const user = require("./schemas/user-Schema");
 const history = require("./schemas/history-Schema");
 
 mongoose
-  .connect("mongodb+srv://root:root@cluster0.utwhjq0.mongodb.net/")
+  .connect("mongodb://127.0.0.1:27017/vchat")
   .then(() => console.log("Connection Established!"))
   .catch((err) => console.log(err));
 
@@ -13,7 +13,12 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://vzchat.netlify.app/", "https://vzchat.netlify.app"],
+    origin: [
+      "https://vzchat.netlify.app/",
+      "https://vzchat.netlify.app",
+      "http://localhost:3000/",
+      "http://localhost:3000",
+    ],
   })
 );
 
@@ -138,7 +143,7 @@ app.put("/app/addMeetData/:meetname/:meetid", async (req, res) => {
       imeet = meet;
     })
     .catch((err) => {
-      res.status(500).send();
+      res.status(501).send();
       console.log(err);
     });
 
@@ -172,7 +177,7 @@ app.put("/app/addMeetData/:meetname/:meetid", async (req, res) => {
 
     history
       .updateOne(
-        { meetid: req.params.meetid } && { meetname: req.params.meetname },
+        { meetid: req.params.meetid, meetname: req.params.meetname },
         { $set: updateMeet }
       )
       .then((updatedMeet) => {

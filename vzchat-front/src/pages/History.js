@@ -39,6 +39,8 @@ function History() {
         if (ids[i][j] === userSId) {
           if (j === 0) {
             meetBy.push(1);
+          } else {
+            meetBy.push(0);
           }
           history.push(hst[i]);
         }
@@ -126,6 +128,7 @@ function History() {
             <div>
               {currentPosts.map((item) => (
                 <div key={item.id} className="container">
+                  {console.log(item)}
                   <div className="row history">
                     <span style={{ marginTop: -17 }}>
                       <hr />

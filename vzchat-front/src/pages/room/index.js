@@ -11,7 +11,7 @@ function RoomPage() {
 
   const myMeeting = async (element) => {
     const appID = "your app id";
-    const serverSecret = "your server socket";
+    const serverSecret = "your server secret";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
@@ -24,8 +24,8 @@ function RoomPage() {
       container: element,
       sharedLinks: [
         {
-          name: "Copy Link",
-          url: `https://vzchat.netlify.app/room/${roomId}`,
+          name: "Copy Roomid",
+          url: `${roomId}`,
         },
       ],
       scenario: {
