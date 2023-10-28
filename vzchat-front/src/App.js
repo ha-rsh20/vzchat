@@ -13,6 +13,8 @@ import NotFound from "./pages/NotFound";
 import Footer from "./pages/Footer";
 import NavBar from "./pages/NavBar";
 import UpdateProfile from "./pages/UpdateProfile";
+import Authenticate from "./pages/Authenticate";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           <Route path="/history" element={<Protected Component={History} />} />
           <Route path="/chat" element={<Protected Component={Chat} />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/register/:at" element={<Register />} />
           <Route path="/login" element={<Register login="true" />} />
           <Route
             path="/room/:roomId"
@@ -34,6 +37,8 @@ function App() {
             path="/updateprofile"
             element={<Protected Component={UpdateProfile} />}
           />
+          <Route path="/auth" element={<Authenticate />} />
+          <Route path="/passwordreset" element={<PasswordReset />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
         <Footer />

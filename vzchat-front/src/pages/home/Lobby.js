@@ -160,80 +160,83 @@ function Lobby() {
   });
 
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <Form onSubmit={handleJoinRoom}>
-          <div
-            style={{
-              margin: "30px",
-              display: "flex",
-              flexDirection: "column",
-              justifyItems: "center",
-              alignItems: "center",
-            }}
-          >
+    <div style={{ height: "100vh", backgroundColor: "black" }}>
+      <div style={{ flex: "1", padding: "auto", backgroundColor: "black" }}>
+        <ThemeProvider theme={theme}>
+          <Form onSubmit={handleJoinRoom}>
             <div
               style={{
-                padding: "5px",
-                borderRadius: "10px",
-                boxShadow: "0px 10px 30px -5px #000",
-                minWidth: "250px",
+                paddingTop: "30px",
+                display: "flex",
+                flexDirection: "column",
+                justifyItems: "center",
+                alignItems: "center",
               }}
             >
-              <Box>
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="wrapped label tabs example"
-                >
-                  <Tab value="one" label="Join room" />
-                  <Tab value="two" label="Create room" />
-                </Tabs>
-              </Box>
-              <div style={{ margin: 10 }}>
-                <TextField
-                  id="outlined-basic"
-                  label="Enter meeting name"
-                  variant="outlined"
-                  value={meetname}
-                  onChange={(e) => {
-                    setMeetName(e.target.value);
-                  }}
-                  required
-                />
-                <br />
-                <br />
-                {value === "one" && (
-                  <>
-                    <TextField
-                      id="outlined-basic"
-                      label="Enter RoomID"
-                      variant="outlined"
-                      value={roomid}
-                      onChange={(e) => {
-                        setRoomId(e.target.value);
-                      }}
-                      required
-                    />
-                    <br />
-                    <br />
-                  </>
-                )}
-                {error ? (
-                  <Button variant="contained" type="submit" disabled>
-                    {value === "one" ? <>join</> : <>create</>}
-                  </Button>
-                ) : (
-                  <Button variant="contained" type="submit">
-                    {value === "one" ? <>join</> : <>create</>}
-                  </Button>
-                )}
+              <div
+                style={{
+                  backgroundColor: "whitesmoke",
+                  padding: "5px",
+                  borderRadius: "10px",
+                  boxShadow: "0px 10px 30px -5px #FFFF",
+                  minWidth: "250px",
+                }}
+              >
+                <Box>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="wrapped label tabs example"
+                  >
+                    <Tab value="one" label="Join Meeting" />
+                    <Tab value="two" label="Create Meeting" />
+                  </Tabs>
+                </Box>
+                <div style={{ margin: 10 }}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Enter meeting name"
+                    variant="outlined"
+                    value={meetname}
+                    onChange={(e) => {
+                      setMeetName(e.target.value);
+                    }}
+                    required
+                  />
+                  <br />
+                  <br />
+                  {value === "one" && (
+                    <>
+                      <TextField
+                        id="outlined-basic"
+                        label="Enter RoomID"
+                        variant="outlined"
+                        value={roomid}
+                        onChange={(e) => {
+                          setRoomId(e.target.value);
+                        }}
+                        required
+                      />
+                      <br />
+                      <br />
+                    </>
+                  )}
+                  {error ? (
+                    <Button variant="contained" type="submit" disabled>
+                      {value === "one" ? <>join</> : <>create</>}
+                    </Button>
+                  ) : (
+                    <Button variant="contained" type="submit">
+                      {value === "one" ? <>join</> : <>create</>}
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </Form>
-        <ToastContainer />
-      </ThemeProvider>
+          </Form>
+          <ToastContainer />
+        </ThemeProvider>
+      </div>
     </div>
   );
 }

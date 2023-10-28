@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const user = require("./schemas/user-Schema");
 const history = require("./schemas/history-Schema");
+const email_routes = require("./Routes/email");
 
 mongoose
   .connect("mongodb+srv://root:root@cluster0.utwhjq0.mongodb.net/")
@@ -21,6 +22,8 @@ app.use(
     ],
   })
 );
+
+app.use("/email", email_routes);
 
 app.get("/app/showAllUsers", (req, res) => {
   user
@@ -105,6 +108,21 @@ app.post("/app/addMeetData", (req, res) => {
     .catch((err) => {
       res.status(500).send(err);
       console.log(err);
+    });
+});
+
+app.put("/passwordreset", (req, res) => {
+  let updatepass = {};
+  if (req.body.password != undefined) {
+    updatepass.password = req.body.password;
+  }
+  user
+    .updateOne({ email: req.body.email }, { $set: updatepass })
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 });
 

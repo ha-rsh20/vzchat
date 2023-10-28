@@ -84,7 +84,7 @@ function History() {
       dispatch(updateUserId(localStorage.getItem("id")));
     }
     axios
-      .get("http://localhost:4000/app/getAllMeetData")
+      .get("https://vzchat-back-service.onrender.com/app/getAllMeetData")
       .then((res) => {
         setHst(res.data);
       })

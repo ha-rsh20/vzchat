@@ -7,7 +7,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@mui/material/TextField";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import Tabs from "@mui/material/Tabs";
@@ -22,20 +22,31 @@ import { updateUserId } from "../state/slice/userSlice.js";
 import { updateUserLoggedIn } from "../state/slice/userSlice.js";
 
 function Register(props) {
+  const { at } = useParams();
+  const [auth, setAuth] = useState(false);
   const [error, setError] = useState(false);
   const [users, setUsers] = useState([]);
   let [user, setUser] = useState();
   const [value, setValue] = useState(
     props.login === "true" ? "login" : "register"
   );
+  const location = useLocation();
   const navigate = useNavigate();
-  const initialValues = {
+  const iV = {
     id: "",
     firstname: "",
     lastname: "",
     email: "",
     password: "",
     confirm_password: "",
+  };
+  const initialValues = {
+    id: location.state ? location.state.id : "",
+    firstname: location.state ? location.state.fname : "",
+    lastname: location.state ? location.state.lname : "",
+    email: location.state ? location.state.mail : "",
+    password: location.state ? location.state.pass : "",
+    confirm_password: location.state ? location.state.pass : "",
   };
   const dispatch = useDispatch();
   const getCharacterValidationError = (str: string) => {
@@ -76,8 +87,11 @@ function Register(props) {
   };
 
   useEffect(() => {
+    if (location.state) {
+      setAuth(true);
+    }
     axios
-      .get("http://localhost:4000/app/showAllUsers")
+      .get("https://vzchat-back-service.onrender.com/app/showAllUsers")
       .then((res) => {
         setUsers(res.data);
       })
@@ -112,11 +126,27 @@ function Register(props) {
   const onRegister = (values, { resetForm }) => {
     values.id = users[users.length - 1].id + 1;
 
-    axios
-      .post("http://localhost:4000/app/addUser", values)
-      .then((res) => {
-        if (res.status === 201) {
-          toast.success("Registered successfully!", {
+    if (auth === true) {
+      axios
+        .post("https://vzchat-back-service.onrender.com/app/addUser", values)
+        .then((res) => {
+          if (res.status === 201) {
+            toast.success("Registered successfully!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+            setValue("login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Error occured to register!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -126,23 +156,20 @@ function Register(props) {
             progress: undefined,
             theme: "dark",
           });
-          setValue("login");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Error occured to register!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
         });
+      resetForm({ values: iV });
+    } else {
+      navigate(`/auth`, {
+        state: {
+          id: values.id,
+          fname: values.firstname,
+          lname: values.lastname,
+          pass: values.password,
+          conf_pass: values.confirm_password,
+          mail: values.email,
+        },
       });
-    resetForm({ values: "" });
+    }
   };
 
   const onLogin = (values) => {
@@ -187,6 +214,10 @@ function Register(props) {
         theme: "dark",
       });
     }
+  };
+
+  const handlePasswordReset = () => {
+    navigate("/passwordreset");
   };
 
   return (
@@ -361,6 +392,13 @@ function Register(props) {
                       >
                         {formik.errors.password}
                       </span>
+                    )}
+                    {value === "login" ? (
+                      <a onClick={handlePasswordReset}>
+                        <u>Forgot Password?</u>
+                      </a>
+                    ) : (
+                      <></>
                     )}
                   </div>
                   {value === "register" && (
