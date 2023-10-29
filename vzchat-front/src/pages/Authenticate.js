@@ -16,10 +16,7 @@ function Authenticate(props) {
 
   const getOTP = () => {
     axios
-      .get(
-        "https://vzchat-back-service.onrender.com/email/sendMail/" +
-          location.state.mail
-      )
+      .get("http://localhost:4000/email/sendMail/" + location.state.mail)
       .then((res) => {
         setOTP(res.data);
         toast.success("OTP sent!", {

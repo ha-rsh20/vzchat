@@ -91,7 +91,7 @@ function Register(props) {
       setAuth(true);
     }
     axios
-      .get("https://vzchat-back-service.onrender.com/app/showAllUsers")
+      .get("http://localhost:4000/app/showAllUsers")
       .then((res) => {
         setUsers(res.data);
       })
@@ -125,13 +125,43 @@ function Register(props) {
 
   const onRegister = (values, { resetForm }) => {
     values.id = users[users.length - 1].id + 1;
+    let userE = users.filter((user) => user.email.includes(values.email));
 
-    if (auth === true) {
-      axios
-        .post("https://vzchat-back-service.onrender.com/app/addUser", values)
-        .then((res) => {
-          if (res.status === 201) {
-            toast.success("Registered successfully!", {
+    if (userE.length !== 0) {
+      if (values.email === userE[0].email) {
+        toast.error("Account already exist!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    } else {
+      if (auth === true) {
+        axios
+          .post("http://localhost:4000/app/addUser", values)
+          .then((res) => {
+            if (res.status === 201) {
+              toast.success("Registered successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+              setValue("login");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("Error occured to register!", {
               position: "top-right",
               autoClose: 3000,
               hideProgressBar: false,
@@ -141,34 +171,20 @@ function Register(props) {
               progress: undefined,
               theme: "dark",
             });
-            setValue("login");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("Error occured to register!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
           });
+        resetForm({ values: iV });
+      } else {
+        navigate(`/auth`, {
+          state: {
+            id: values.id,
+            fname: values.firstname,
+            lname: values.lastname,
+            pass: values.password,
+            conf_pass: values.confirm_password,
+            mail: values.email,
+          },
         });
-      resetForm({ values: iV });
-    } else {
-      navigate(`/auth`, {
-        state: {
-          id: values.id,
-          fname: values.firstname,
-          lname: values.lastname,
-          pass: values.password,
-          conf_pass: values.confirm_password,
-          mail: values.email,
-        },
-      });
+      }
     }
   };
 
