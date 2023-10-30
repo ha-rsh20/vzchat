@@ -7,13 +7,10 @@ function Footer() {
   let year = new Date().getFullYear();
   return (
     <div>
-      {console.log()}
       <Navbar fixed="bottom" bg="dark" variant="dark">
-        <Container className="text-center text-muted">
-          <Col lg={12} className="text-center text-light">
-            {year} - All Rights are Reserved!!!
-          </Col>
-        </Container>
+        <div style={{ width: "100%", textAlign: "center", color: "white" }}>
+          {year} - All Rights are Reserved!!!
+        </div>
       </Navbar>
     </div>
   );

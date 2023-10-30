@@ -29,6 +29,11 @@ function NavBar() {
   const userLName = useSelector((state) => state.users.lastname);
   const userEmail = useSelector((state) => state.users.email);
   const userSId = useSelector((state) => state.users.id);
+  const navbar = {
+    fontWeight: 600,
+    borderRadius: 10,
+    backgroundColor: "#2b0000",
+  };
   const dispatch = useDispatch();
 
   const removeSetup = () => {
@@ -82,7 +87,7 @@ function NavBar() {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar variant="dark" expand="lg" style={navbar}>
       <Container>
         <Navbar.Brand as={Link} to="/">
           VChat

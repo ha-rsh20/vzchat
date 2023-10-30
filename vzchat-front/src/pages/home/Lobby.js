@@ -176,12 +176,14 @@ function Lobby() {
               style={{
                 padding: "5px",
                 borderRadius: "10px",
-                boxShadow: "0px 10px 30px -5px #000",
+                boxShadow: "0px 10px 30px -5px #2b0000",
                 minWidth: "250px",
               }}
             >
               <Box>
                 <Tabs
+                  textColor="secondary"
+                  indicatorColor="secondary"
                   value={value}
                   onChange={handleChange}
                   aria-label="wrapped label tabs example"

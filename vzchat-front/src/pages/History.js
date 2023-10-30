@@ -128,7 +128,6 @@ function History() {
             <div>
               {currentPosts.map((item) => (
                 <div key={item.id} className="container">
-                  {console.log(item)}
                   <div className="row history">
                     <span style={{ marginTop: -17 }}>
                       <hr />

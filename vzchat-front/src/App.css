@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  color: #2b0000;
+  padding: 10px 10px 0px 10px;
 }
 
 .App-logo {
@@ -43,5 +45,5 @@
 
 .history:hover {
   border-radius: 10px;
-  box-shadow: 5px 5px 15px -5px #000;
+  box-shadow: 5px 5px 15px -5px #2b0000;
 }

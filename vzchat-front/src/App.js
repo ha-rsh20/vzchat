@@ -41,7 +41,6 @@ function App() {
           <Route path="/passwordreset" element={<PasswordReset />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
-        <Footer />
       </Provider>
     </div>
   );

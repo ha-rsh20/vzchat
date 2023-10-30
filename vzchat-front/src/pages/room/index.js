@@ -36,7 +36,7 @@ function RoomPage() {
 
   return (
     <div>
-      <div ref={myMeeting} style={{ height: height - 90 }} />
+      <div ref={myMeeting} style={{ height: height - 72 }} />
     </div>
   );
 }
